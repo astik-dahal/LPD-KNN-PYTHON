@@ -5,6 +5,8 @@ import numpy as np
 import math
 
 ###################################################################################################
+
+
 class PossibleChar:
 
     # constructor #################################################################################
@@ -22,20 +24,16 @@ class PossibleChar:
 
         self.intBoundingRectArea = self.intBoundingRectWidth * self.intBoundingRectHeight
 
-        self.intCenterX = (self.intBoundingRectX + self.intBoundingRectX + self.intBoundingRectWidth) / 2
-        self.intCenterY = (self.intBoundingRectY + self.intBoundingRectY + self.intBoundingRectHeight) / 2
+        self.intCenterX = (self.intBoundingRectX +
+                           self.intBoundingRectX + self.intBoundingRectWidth) / 2
+        self.intCenterY = (self.intBoundingRectY +
+                           self.intBoundingRectY + self.intBoundingRectHeight) / 2
 
-        self.fltDiagonalSize = math.sqrt((self.intBoundingRectWidth ** 2) + (self.intBoundingRectHeight ** 2))
+        self.fltDiagonalSize = math.sqrt(
+            (self.intBoundingRectWidth ** 2) + (self.intBoundingRectHeight ** 2))
 
-        self.fltAspectRatio = float(self.intBoundingRectWidth) / float(self.intBoundingRectHeight)
+        self.fltAspectRatio = float(
+            self.intBoundingRectWidth) / float(self.intBoundingRectHeight)
     # end constructor
 
 # end class
-
-
-
-
-
-
-
-

@@ -18,41 +18,53 @@ SCALAR_RED = (0.0, 0.0, 255.0)
 showSteps = False
 
 ###################################################################################################
+
+
 def main():
 
-    blnKNNTrainingSuccessful = DetectChars.loadKNNDataAndTrainKNN()         # attempt KNN training
+    # attempt KNN training
+    blnKNNTrainingSuccessful = DetectChars.loadKNNDataAndTrainKNN()
 
     if blnKNNTrainingSuccessful == False:                               # if KNN training was not successful
         print("\nerror: KNN traning was not successful\n")  # show error message
         return                                                          # and exit program
     # end if
 
-    imgOriginalScene  = cv2.imread("LicPlateImages/1.png")               # open image
+    imgOriginalScene = cv2.imread(
+        "LicPlateImages/1.png")               # open image
 
     if imgOriginalScene is None:                            # if image was not read successfully
-        print("\nerror: image not read from file \n\n")  # print error message to std out
-        os.system("pause")                                  # pause so user can see error message
+        # print error message to std out
+        print("\nerror: image not read from file \n\n")
+        # pause so user can see error message
+        os.system("pause")
         return                                              # and exit program
     # end if
 
-    listOfPossiblePlates = DetectPlates.detectPlatesInScene(imgOriginalScene)           # detect plates
+    listOfPossiblePlates = DetectPlates.detectPlatesInScene(
+        imgOriginalScene)           # detect plates
 
-    listOfPossiblePlates = DetectChars.detectCharsInPlates(listOfPossiblePlates)        # detect chars in plates
+    listOfPossiblePlates = DetectChars.detectCharsInPlates(
+        listOfPossiblePlates)        # detect chars in plates
 
-    cv2.imshow("imgOriginalScene", imgOriginalScene)            # show scene image
+    # show scene image
+    cv2.imshow("imgOriginalScene", imgOriginalScene)
 
     if len(listOfPossiblePlates) == 0:                          # if no plates were found
-        print("\nno license plates were detected\n")  # inform user no plates were found
+        # inform user no plates were found
+        print("\nno license plates were detected\n")
     else:                                                       # else
-                # if we get in here list of possible plates has at leat one plate
+        # if we get in here list of possible plates has at leat one plate
 
-                # sort the list of possible plates in DESCENDING order (most number of chars to least number of chars)
-        listOfPossiblePlates.sort(key = lambda possiblePlate: len(possiblePlate.strChars), reverse = True)
+        # sort the list of possible plates in DESCENDING order (most number of chars to least number of chars)
+        listOfPossiblePlates.sort(key=lambda possiblePlate: len(
+            possiblePlate.strChars), reverse=True)
 
-                # suppose the plate with the most recognized chars (the first plate in sorted by string length descending order) is the actual plate
+        # suppose the plate with the most recognized chars (the first plate in sorted by string length descending order) is the actual plate
         licPlate = listOfPossiblePlates[0]
 
-        cv2.imshow("imgPlate", licPlate.imgPlate)           # show crop of plate and threshold of plate
+        # show crop of plate and threshold of plate
+        cv2.imshow("imgPlate", licPlate.imgPlate)
         cv2.imshow("imgThresh", licPlate.imgThresh)
 
         if len(licPlate.strChars) == 0:                     # if no chars were found in the plate
@@ -60,16 +72,21 @@ def main():
             return                                          # and exit program
         # end if
 
-        drawRedRectangleAroundPlate(imgOriginalScene, licPlate)             # draw red rectangle around plate
+        # draw red rectangle around plate
+        drawRedRectangleAroundPlate(imgOriginalScene, licPlate)
 
-        print("\nlicense plate read from image = " + licPlate.strChars + "\n")  # write license plate text to std out
+        # write license plate text to std out
+        print("\nlicense plate read from image = " + licPlate.strChars + "\n")
         print("----------------------------------------")
 
-        writeLicensePlateCharsOnImage(imgOriginalScene, licPlate)           # write license plate text on the image
+        # write license plate text on the image
+        writeLicensePlateCharsOnImage(imgOriginalScene, licPlate)
 
-        cv2.imshow("imgOriginalScene", imgOriginalScene)                # re-show scene image
+        # re-show scene image
+        cv2.imshow("imgOriginalScene", imgOriginalScene)
 
-        cv2.imwrite("imgOriginalScene.png", imgOriginalScene)           # write image out to file
+        # write image out to file
+        cv2.imwrite("imgOriginalScene.png", imgOriginalScene)
 
     # end if else
 
@@ -79,74 +96,88 @@ def main():
 # end main
 
 ###################################################################################################
+
+
 def drawRedRectangleAroundPlate(imgOriginalScene, licPlate):
 
-    p2fRectPoints = cv2.boxPoints(licPlate.rrLocationOfPlateInScene)            # get 4 vertices of rotated rect
-
-    cv2.line(imgOriginalScene, tuple(p2fRectPoints[0]), tuple(p2fRectPoints[1]), SCALAR_RED, 2)         # draw 4 red lines
-    cv2.line(imgOriginalScene, tuple(p2fRectPoints[1]), tuple(p2fRectPoints[2]), SCALAR_RED, 2)
-    cv2.line(imgOriginalScene, tuple(p2fRectPoints[2]), tuple(p2fRectPoints[3]), SCALAR_RED, 2)
-    cv2.line(imgOriginalScene, tuple(p2fRectPoints[3]), tuple(p2fRectPoints[0]), SCALAR_RED, 2)
+    # get 4 vertices of rotated rect
+    p2fRectPoints = cv2.boxPoints(licPlate.rrLocationOfPlateInScene)
+    print(p2fRectPoints)
+    print(type(p2fRectPoints[0]))
+    print(type(p2fRectPoints[1]))
+    # cv2.line(imgOriginalScene, tuple(p2fRectPoints[0].astype(int)), tuple(p2fRectPoints[1].astype(int)), SCALAR_RED, 2)
+    cv2.line(imgOriginalScene, tuple(p2fRectPoints[0].astype(int)), tuple(
+        p2fRectPoints[1].astype(int)), SCALAR_RED, 2)         # draw 4 red lines
+    cv2.line(imgOriginalScene, tuple(p2fRectPoints[1].astype(int)), tuple(
+        p2fRectPoints[2].astype(int)), SCALAR_RED, 2)
+    cv2.line(imgOriginalScene, tuple(p2fRectPoints[2].astype(int)), tuple(
+        p2fRectPoints[3].astype(int)), SCALAR_RED, 2)
+    cv2.line(imgOriginalScene, tuple(p2fRectPoints[3].astype(int)), tuple(
+        p2fRectPoints[0].astype(int)), SCALAR_RED, 2)
 # end function
 
 ###################################################################################################
+
+
 def writeLicensePlateCharsOnImage(imgOriginalScene, licPlate):
-    ptCenterOfTextAreaX = 0                             # this will be the center of the area the text will be written to
+    # this will be the center of the area the text will be written to
+    ptCenterOfTextAreaX = 0
     ptCenterOfTextAreaY = 0
 
-    ptLowerLeftTextOriginX = 0                          # this will be the bottom left of the area that the text will be written to
+    # this will be the bottom left of the area that the text will be written to
+    ptLowerLeftTextOriginX = 0
     ptLowerLeftTextOriginY = 0
 
     sceneHeight, sceneWidth, sceneNumChannels = imgOriginalScene.shape
     plateHeight, plateWidth, plateNumChannels = licPlate.imgPlate.shape
 
-    intFontFace = cv2.FONT_HERSHEY_SIMPLEX                      # choose a plain jane font
-    fltFontScale = float(plateHeight) / 30.0                    # base font scale on height of plate area
-    intFontThickness = int(round(fltFontScale * 1.5))           # base font thickness on font scale
+    # choose a plain jane font
+    intFontFace = cv2.FONT_HERSHEY_SIMPLEX
+    # base font scale on height of plate area
+    fltFontScale = float(plateHeight) / 30.0
+    # base font thickness on font scale
+    intFontThickness = int(round(fltFontScale * 1.5))
 
-    textSize, baseline = cv2.getTextSize(licPlate.strChars, intFontFace, fltFontScale, intFontThickness)        # call getTextSize
+    textSize, baseline = cv2.getTextSize(
+        licPlate.strChars, intFontFace, fltFontScale, intFontThickness)        # call getTextSize
 
-            # unpack roatated rect into center point, width and height, and angle
-    ( (intPlateCenterX, intPlateCenterY), (intPlateWidth, intPlateHeight), fltCorrectionAngleInDeg ) = licPlate.rrLocationOfPlateInScene
+    # unpack roatated rect into center point, width and height, and angle
+    ((intPlateCenterX, intPlateCenterY), (intPlateWidth, intPlateHeight),
+     fltCorrectionAngleInDeg) = licPlate.rrLocationOfPlateInScene
 
-    intPlateCenterX = int(intPlateCenterX)              # make sure center is an integer
+    # make sure center is an integer
+    intPlateCenterX = int(intPlateCenterX)
     intPlateCenterY = int(intPlateCenterY)
 
-    ptCenterOfTextAreaX = int(intPlateCenterX)         # the horizontal location of the text area is the same as the plate
+    # the horizontal location of the text area is the same as the plate
+    ptCenterOfTextAreaX = int(intPlateCenterX)
 
-    if intPlateCenterY < (sceneHeight * 0.75):                                                  # if the license plate is in the upper 3/4 of the image
-        ptCenterOfTextAreaY = int(round(intPlateCenterY)) + int(round(plateHeight * 1.6))      # write the chars in below the plate
-    else:                                                                                       # else if the license plate is in the lower 1/4 of the image
-        ptCenterOfTextAreaY = int(round(intPlateCenterY)) - int(round(plateHeight * 1.6))      # write the chars in above the plate
+    # if the license plate is in the upper 3/4 of the image
+    if intPlateCenterY < (sceneHeight * 0.75):
+        # write the chars in below the plate
+        ptCenterOfTextAreaY = int(
+            round(intPlateCenterY)) + int(round(plateHeight * 1.6))
+    # else if the license plate is in the lower 1/4 of the image
+    else:
+        # write the chars in above the plate
+        ptCenterOfTextAreaY = int(
+            round(intPlateCenterY)) - int(round(plateHeight * 1.6))
     # end if
 
-    textSizeWidth, textSizeHeight = textSize                # unpack text size width and height
+    # unpack text size width and height
+    textSizeWidth, textSizeHeight = textSize
 
-    ptLowerLeftTextOriginX = int(ptCenterOfTextAreaX - (textSizeWidth / 2))           # calculate the lower left origin of the text area
-    ptLowerLeftTextOriginY = int(ptCenterOfTextAreaY + (textSizeHeight / 2))          # based on the text area center, width, and height
+    # calculate the lower left origin of the text area
+    ptLowerLeftTextOriginX = int(ptCenterOfTextAreaX - (textSizeWidth / 2))
+    # based on the text area center, width, and height
+    ptLowerLeftTextOriginY = int(ptCenterOfTextAreaY + (textSizeHeight / 2))
 
-            # write the text on the image
-    cv2.putText(imgOriginalScene, licPlate.strChars, (ptLowerLeftTextOriginX, ptLowerLeftTextOriginY), intFontFace, fltFontScale, SCALAR_YELLOW, intFontThickness)
+    # write the text on the image
+    cv2.putText(imgOriginalScene, licPlate.strChars, (ptLowerLeftTextOriginX,
+                ptLowerLeftTextOriginY), intFontFace, fltFontScale, SCALAR_YELLOW, intFontThickness)
 # end function
+
 
 ###################################################################################################
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

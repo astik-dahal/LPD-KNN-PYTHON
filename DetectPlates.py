@@ -3,7 +3,7 @@
 import cv2
 import numpy as np
 import math
-import Main
+import Display
 import random
 
 import Preprocess
@@ -29,14 +29,14 @@ def detectPlatesInScene(imgOriginalScene):
 
     cv2.destroyAllWindows()
 
-    if Main.showSteps == True:  # show steps #######################################################
+    if Display.showSteps == True:  # show steps #######################################################
         cv2.imshow("0", imgOriginalScene)
     # end if # show steps #########################################################################
 
     imgGrayscaleScene, imgThreshScene = Preprocess.preprocess(
         imgOriginalScene)         # preprocess to get grayscale and threshold images
 
-    if Main.showSteps == True:  # show steps #######################################################
+    if Display.showSteps == True:  # show steps #######################################################
         cv2.imshow("1a", imgGrayscaleScene)
         cv2.imshow("1b", imgThreshScene)
     # end if # show steps #########################################################################
@@ -45,7 +45,7 @@ def detectPlatesInScene(imgOriginalScene):
         # this function first finds all contours, then only includes contours that could be chars (without comparison to other chars yet)
     listOfPossibleCharsInScene = findPossibleCharsInScene(imgThreshScene)
 
-    if Main.showSteps == True:  # show steps #######################################################
+    if Display.showSteps == True:  # show steps #######################################################
         print("step 2 - len(listOfPossibleCharsInScene) = " + str(
             len(listOfPossibleCharsInScene)))  # 131 with MCLRNF1 image
 
@@ -57,7 +57,7 @@ def detectPlatesInScene(imgOriginalScene):
             contours.append(possibleChar.contour)
         # end for
 
-        cv2.drawContours(imgContours, contours, -1, Main.SCALAR_WHITE)
+        cv2.drawContours(imgContours, contours, -1, Display.SCALAR_WHITE)
         cv2.imshow("2b", imgContours)
     # end if # show steps #########################################################################
 
@@ -66,7 +66,7 @@ def detectPlatesInScene(imgOriginalScene):
     listOfListsOfMatchingCharsInScene = DetectChars.findListOfListsOfMatchingChars(
         listOfPossibleCharsInScene)
 
-    if Main.showSteps == True:  # show steps #######################################################
+    if Display.showSteps == True:  # show steps #######################################################
         print("step 3 - listOfListsOfMatchingCharsInScene.Count = " + str(
             len(listOfListsOfMatchingCharsInScene)))  # 13 with MCLRNF1 image
 
@@ -104,7 +104,7 @@ def detectPlatesInScene(imgOriginalScene):
     print("\n" + str(len(listOfPossiblePlates)) +
           " possible plates found")  # 13 with MCLRNF1 image
 
-    if Main.showSteps == True:  # show steps #######################################################
+    if Display.showSteps == True:  # show steps #######################################################
         print("\n")
         cv2.imshow("4a", imgContours)
 
@@ -112,17 +112,17 @@ def detectPlatesInScene(imgOriginalScene):
             p2fRectPoints = cv2.boxPoints(
                 listOfPossiblePlates[i].rrLocationOfPlateInScene)
 
-            cv2.line(imgContours, tuple(p2fRectPoints[0]), tuple(
-                p2fRectPoints[1]), Main.SCALAR_RED, 2)
-            cv2.line(imgContours, tuple(p2fRectPoints[1]), tuple(
-                p2fRectPoints[2]), Main.SCALAR_RED, 2)
-            cv2.line(imgContours, tuple(p2fRectPoints[2]), tuple(
-                p2fRectPoints[3]), Main.SCALAR_RED, 2)
-            cv2.line(imgContours, tuple(p2fRectPoints[3]), tuple(
-                p2fRectPoints[0]), Main.SCALAR_RED, 2)
+            cv2.line(imgContours, tuple(p2fRectPoints[0].astype(int)), tuple(
+                p2fRectPoints[1].astype(int)), Display.SCALAR_RED, 2)
+            cv2.line(imgContours, tuple(p2fRectPoints[1].astype(int)), tuple(
+                p2fRectPoints[2].astype(int)), Display.SCALAR_RED, 2)
+            cv2.line(imgContours, tuple(p2fRectPoints[2].astype(int)), tuple(
+                p2fRectPoints[3].astype(int)), Display.SCALAR_RED, 2)
+            cv2.line(imgContours, tuple(p2fRectPoints[3].astype(int)), tuple(
+                p2fRectPoints[0].astype(int)), Display.SCALAR_RED, 2)
 
             cv2.imshow("4a", imgContours)
-
+            
             print("possible plate " + str(i) +
                   ", click on any image and press a key to continue . . .")
 
@@ -158,8 +158,8 @@ def findPossibleCharsInScene(imgThresh):
 
     for i in range(0, len(contours)):                       # for each contour
 
-        if Main.showSteps == True:  # show steps ###################################################
-            cv2.drawContours(imgContours, contours, i, Main.SCALAR_WHITE)
+        if Display.showSteps == True:  # show steps ###################################################
+            cv2.drawContours(imgContours, contours, i, Display.SCALAR_WHITE)
         # end if # show steps #####################################################################
 
         possibleChar = PossibleChar.PossibleChar(contours[i])
@@ -173,7 +173,7 @@ def findPossibleCharsInScene(imgThresh):
         # end if
     # end for
 
-    if Main.showSteps == True:  # show steps #######################################################
+    if Display.showSteps == True:  # show steps #######################################################
         # 2362 with MCLRNF1 image
         print("\nstep 2 - len(contours) = " + str(len(contours)))
         print("step 2 - intCountOfPossibleChars = " +

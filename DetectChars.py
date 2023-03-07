@@ -6,7 +6,7 @@ import numpy as np
 import math
 import random
 
-import Main
+import Display
 import Preprocess
 import PossibleChar
 
@@ -107,7 +107,7 @@ def detectCharsInPlates(listOfPossiblePlates):
         possiblePlate.imgGrayscale, possiblePlate.imgThresh = Preprocess.preprocess(
             possiblePlate.imgPlate)     # preprocess to get grayscale and threshold images
 
-        if Main.showSteps == True:  # show steps ###################################################
+        if Display.showSteps == True:  # show steps ###################################################
             cv2.imshow("5a", possiblePlate.imgPlate)
             cv2.imshow("5b", possiblePlate.imgGrayscale)
             cv2.imshow("5c", possiblePlate.imgThresh)
@@ -121,7 +121,7 @@ def detectCharsInPlates(listOfPossiblePlates):
         thresholdValue, possiblePlate.imgThresh = cv2.threshold(
             possiblePlate.imgThresh, 0.0, 255.0, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 
-        if Main.showSteps == True:  # show steps ###################################################
+        if Display.showSteps == True:  # show steps ###################################################
             cv2.imshow("5d", possiblePlate.imgThresh)
         # end if # show steps #####################################################################
 
@@ -130,7 +130,7 @@ def detectCharsInPlates(listOfPossiblePlates):
         listOfPossibleCharsInPlate = findPossibleCharsInPlate(
             possiblePlate.imgGrayscale, possiblePlate.imgThresh)
 
-        if Main.showSteps == True:  # show steps ###################################################
+        if Display.showSteps == True:  # show steps ###################################################
             height, width, numChannels = possiblePlate.imgPlate.shape
             imgContours = np.zeros((height, width, 3), np.uint8)
             # clear the contours list
@@ -140,7 +140,7 @@ def detectCharsInPlates(listOfPossiblePlates):
                 contours.append(possibleChar.contour)
             # end for
 
-            cv2.drawContours(imgContours, contours, -1, Main.SCALAR_WHITE)
+            cv2.drawContours(imgContours, contours, -1, Display.SCALAR_WHITE)
 
             cv2.imshow("6", imgContours)
         # end if # show steps #####################################################################
@@ -149,7 +149,7 @@ def detectCharsInPlates(listOfPossiblePlates):
         listOfListsOfMatchingCharsInPlate = findListOfListsOfMatchingChars(
             listOfPossibleCharsInPlate)
 
-        if Main.showSteps == True:  # show steps ###################################################
+        if Display.showSteps == True:  # show steps ###################################################
             imgContours = np.zeros((height, width, 3), np.uint8)
             del contours[:]
 
@@ -170,7 +170,7 @@ def detectCharsInPlates(listOfPossiblePlates):
         # if no groups of matching chars were found in the plate
         if (len(listOfListsOfMatchingCharsInPlate) == 0):
 
-            if Main.showSteps == True:  # show steps ###############################################
+            if Display.showSteps == True:  # show steps ###############################################
                 print("chars found in plate number " + str(
                     intPlateCounter) + " = (none), click on any image and press a key to continue . . .")
                 intPlateCounter = intPlateCounter + 1
@@ -192,7 +192,7 @@ def detectCharsInPlates(listOfPossiblePlates):
                 listOfListsOfMatchingCharsInPlate[i])              # and remove inner overlapping chars
         # end for
 
-        if Main.showSteps == True:  # show steps ###################################################
+        if Display.showSteps == True:  # show steps ###################################################
             imgContours = np.zeros((height, width, 3), np.uint8)
 
             for listOfMatchingChars in listOfListsOfMatchingCharsInPlate:
@@ -229,7 +229,7 @@ def detectCharsInPlates(listOfPossiblePlates):
         longestListOfMatchingCharsInPlate = listOfListsOfMatchingCharsInPlate[
             intIndexOfLongestListOfChars]
 
-        if Main.showSteps == True:  # show steps ###################################################
+        if Display.showSteps == True:  # show steps ###################################################
             imgContours = np.zeros((height, width, 3), np.uint8)
             del contours[:]
 
@@ -237,7 +237,7 @@ def detectCharsInPlates(listOfPossiblePlates):
                 contours.append(matchingChar.contour)
             # end for
 
-            cv2.drawContours(imgContours, contours, -1, Main.SCALAR_WHITE)
+            cv2.drawContours(imgContours, contours, -1, Display.SCALAR_WHITE)
 
             cv2.imshow("9", imgContours)
         # end if # show steps #####################################################################
@@ -245,7 +245,7 @@ def detectCharsInPlates(listOfPossiblePlates):
         possiblePlate.strChars = recognizeCharsInPlate(
             possiblePlate.imgThresh, longestListOfMatchingCharsInPlate)
 
-        if Main.showSteps == True:  # show steps ###################################################
+        if Display.showSteps == True:  # show steps ###################################################
             print("chars found in plate number " + str(
                 intPlateCounter) + " = " + possiblePlate.strChars + ", click on any image and press a key to continue . . .")
             intPlateCounter = intPlateCounter + 1
@@ -254,7 +254,7 @@ def detectCharsInPlates(listOfPossiblePlates):
 
     # end of big for loop that takes up most of the function
 
-    if Main.showSteps == True:
+    if Display.showSteps == True:
         print("\nchar detection complete, click on any image and press a key to continue . . .\n")
         cv2.waitKey(0)
     # end if
@@ -497,7 +497,7 @@ def recognizeCharsInPlate(imgThresh, listOfMatchingChars):
         pt2 = ((currentChar.intBoundingRectX + currentChar.intBoundingRectWidth),
                (currentChar.intBoundingRectY + currentChar.intBoundingRectHeight))
 
-        cv2.rectangle(imgThreshColor, pt1, pt2, Main.SCALAR_GREEN,
+        cv2.rectangle(imgThreshColor, pt1, pt2, Display.SCALAR_GREEN,
                       2)           # draw green box around the char
 
         # crop char out of threshold image
@@ -526,7 +526,7 @@ def recognizeCharsInPlate(imgThresh, listOfMatchingChars):
 
     # end for
 
-    if Main.showSteps == True:  # show steps #######################################################
+    if Display.showSteps == True:  # show steps #######################################################
         cv2.imshow("10", imgThreshColor)
     # end if # show steps #########################################################################
 

@@ -33,7 +33,6 @@ def results(urlToTheImage):
     else:
         imgOriginalScene = cv2.imread(
             "LicPlateImages/22.jpeg")               # open image
-    # imgOriginalScene = cv2.imread("LicPlateImages/21.png")
 
     if imgOriginalScene is None:                            # if image was not read successfully
         # print error message to std out

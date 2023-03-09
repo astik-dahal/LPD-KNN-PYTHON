@@ -17,6 +17,15 @@ PLATE_HEIGHT_PADDING_FACTOR = 1.5
 
 ###################################################################################################
 
+# function detectPlatesInScene()
+# Initialize an empty list listOfPossiblePlates to hold the possible license plates found in the image.
+# Preprocess the image to get a grayscale and threshold image.
+# Find all possible characters in the scene.
+# Given a list of all possible characters, find groups of matching characters.
+# For each group of matching characters, attempt to extract a plate.
+# If a plate is found, add it to the list of possible plates.
+# Return the list of possible plates.
+
 
 def detectPlatesInScene(imgOriginalScene):
     listOfPossiblePlates = []                   # this will be the return value
@@ -26,7 +35,8 @@ def detectPlatesInScene(imgOriginalScene):
     imgGrayscaleScene = np.zeros((height, width, 1), np.uint8)
     imgThreshScene = np.zeros((height, width, 1), np.uint8)
     imgContours = np.zeros((height, width, 3), np.uint8)
-
+    print("imgGrayscaleScene", imgGrayscaleScene,
+          "imgThreshScene", imgThreshScene, "imgContours", imgContours)
     cv2.destroyAllWindows()
 
     if Display.showSteps == True:  # show steps #######################################################
@@ -122,7 +132,7 @@ def detectPlatesInScene(imgOriginalScene):
                 p2fRectPoints[0].astype(int)), Display.SCALAR_RED, 2)
 
             cv2.imshow("4a", imgContours)
-            
+
             print("possible plate " + str(i) +
                   ", click on any image and press a key to continue . . .")
 

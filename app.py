@@ -9,6 +9,8 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+# MODEL
 class Vehicle(db.Model):
     __tablename__ = 'vehicles'
     id = db.Column(db.Integer, primary_key=True)
@@ -37,7 +39,7 @@ class Owner(db.Model):
     address = db.Column(db.String)
     vehicles = db.relationship("Vehicle", order_by=Vehicle.id, back_populates="owner")
 
-
+# CONTROLLER
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -80,7 +82,7 @@ def upload_file():
                     'owner_address': owner.address,
                 }
                 print(resultWithImage)
-
+                # VIEW
                 return render_template('front.html', resultWithImage=resultWithImage)
             else:
                 return render_template('front.html', error='No vehicle information found for the uploaded image.')

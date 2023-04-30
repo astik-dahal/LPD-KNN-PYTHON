@@ -13,7 +13,7 @@ RESIZED_IMAGE_HEIGHT = 30
 
 ###################################################################################################
 def main():
-    imgTrainingNumbers = cv2.imread("training_chars.png")            # read in training numbers image
+    imgTrainingNumbers = cv2.imread("LPD-KNN-PYTHON\Training\training_chars_small_test.png")            # read in training numbers image
 
     if imgTrainingNumbers is None:                          # if image was not read successfully
         print( "error: image not read from file \n\n" )       # print error message to std out
@@ -98,8 +98,8 @@ def main():
     return
 
 ###################################################################################################
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 # end if
 
 

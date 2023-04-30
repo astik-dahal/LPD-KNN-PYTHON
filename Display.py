@@ -96,7 +96,7 @@ def results(urlToTheImage):
     # end if else
     parsePlateNumbers(licensePlates)
     cv2.waitKey(0)					# hold windows open until user presses a key
-    return licensePlates
+    return licensePlates[0]
     # return
 # end main
 

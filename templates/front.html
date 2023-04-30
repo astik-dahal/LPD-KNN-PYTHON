@@ -48,7 +48,19 @@
       <div class="mt-5">
         <h2 class="text-center mb-4">Results:</h2>
         <div class="alert alert-primary text-center" role="alert">
-          {{ resultWithImage.result }}
+          <p>Plate Number: {{ resultWithImage.result }}</p>
+          {% if resultWithImage.make %}
+          <p>Make: {{ resultWithImage.make }}</p>
+          <p>Model: {{ resultWithImage.model }}</p>
+          <p>Year: {{ resultWithImage.year }}</p>
+          <p>Color: {{ resultWithImage.color }}</p>
+          {% endif %}
+          <hr>
+          <h4>Owner Information:</h4>
+          <p>First Name: {{ resultWithImage.owner_first_name }}</p>
+          <p>Last Name: {{ resultWithImage.owner_last_name }}</p>
+          <p>Contact Number: {{ resultWithImage.owner_contact_number }}</p>
+          <p>Address: {{ resultWithImage.owner_address }}</p>
         </div>
         {% endif %}
       </div>

@@ -56,7 +56,8 @@ def main():
     # end try
 
     npaClassifications = npaClassifications.reshape((npaClassifications.size, 1))       # reshape numpy array to 1d, necessary to pass to call to train
-
+    # print(npaClassifications[0], "Classifications")
+    # print(npaFlattenedImages[0], "Flattened Images")
     kNearest = cv2.ml.KNearest_create()                   # instantiate KNN object
 
     kNearest.train(npaFlattenedImages, cv2.ml.ROW_SAMPLE, npaClassifications)
@@ -129,7 +130,7 @@ def main():
         strFinalString = strFinalString + strCurrentChar            # append current char to full string
     # end for
 
-    print ("\n" + strFinalString + "\n"   )               # show the full string
+    print ("\n FULL STRING" + strFinalString + "\n"   )               # show the full string
 
     cv2.imshow("imgTestingNumbers", imgTestingNumbers)      # show input image with green boxes drawn around found digits
     cv2.waitKey(0)                                          # wait for user key press

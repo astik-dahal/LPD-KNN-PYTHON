@@ -51,6 +51,7 @@ def results(urlToTheImage):
     # show scene image
     # cv2.imshow("imgOriginalScene", imgOriginalScene)
 
+    licensePlates = []
     if len(listOfPossiblePlates) == 0:                          # if no plates were found
         # inform user no plates were found
         print("\nno license plates were detected\n")
@@ -78,9 +79,8 @@ def results(urlToTheImage):
 
         # write license plate text to std out
         print("\nlicense plate read from image = \n")
-        licensePlates = []
         for plate in listOfPossiblePlates:
-            print(plate.strChars)
+            # print(plate.strChars)
             licensePlates.append(plate.strChars)
         print("----------------------------------------")
 
@@ -94,9 +94,13 @@ def results(urlToTheImage):
         cv2.imwrite("imgOriginalScene.png", imgOriginalScene)
 
     # end if else
+    print("License Plates", licensePlates)
     parsePlateNumbers(licensePlates)
     cv2.waitKey(0)					# hold windows open until user presses a key
-    return licensePlates[0]
+    if not len(licensePlates) == 0:
+        return licensePlates[0]
+    else:
+        return None
     # return
 # end main
 
@@ -180,7 +184,7 @@ def writeLicensePlateCharsOnImage(imgOriginalScene, licPlate):
 
 
 def parsePlateNumbers(arr):
-    print(arr)
+    # print(arr)
 
     return
 

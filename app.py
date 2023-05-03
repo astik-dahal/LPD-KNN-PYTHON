@@ -85,7 +85,13 @@ def upload_file():
                 # VIEW
                 return render_template('front.html', resultWithImage=resultWithImage)
             else:
-                return render_template('front.html', error='No vehicle information found for the uploaded image.')
+                print("error happened")
+                errorMsg = {
+                    "img_url" : file_url,
+                    'img_name': filename,
+                    "error_message": "No vehicle information found for the uploaded image."
+                }
+                return render_template('front.html', errorMsg=errorMsg)
     return render_template('front.html')
 
 @app.route('/uploads/<filename>')

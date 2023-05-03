@@ -23,7 +23,7 @@ def upload_file():
             filename = secure_filename(file.filename)
             file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(file_url)
-            print(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # print(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             result = results(file_url)
             resultWithImage = {
                 'result': result,

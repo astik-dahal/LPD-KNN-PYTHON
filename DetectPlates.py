@@ -35,8 +35,8 @@ def detectPlatesInScene(imgOriginalScene):
     imgGrayscaleScene = np.zeros((height, width, 1), np.uint8)
     imgThreshScene = np.zeros((height, width, 1), np.uint8)
     imgContours = np.zeros((height, width, 3), np.uint8)
-    print("imgGrayscaleScene", imgGrayscaleScene,
-          "imgThreshScene", imgThreshScene, "imgContours", imgContours)
+    # print("imgGrayscaleScene", imgGrayscaleScene,
+    #       "imgThreshScene", imgThreshScene, "imgContours", imgContours)
     cv2.destroyAllWindows()
 
     if Display.showSteps == True:  # show steps #######################################################

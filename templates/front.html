@@ -1,84 +1,86 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>License Plate Recognition</title>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-  </head>
-  <body>
-    <div class="container mt-5">
-      <h1 class="text-center mb-5">License Plate Recognition</h1>
-      <div class="row">
-        <div class="col-md-6">
-          <form method="POST" action="/" enctype="multipart/form-data">
-            <div class="form-group">
-              <label for="fileInput"
-                ><i class="fas fa-upload"></i> Choose a file</label
-              >
-              <input
-                type="file"
-                name="file"
-                id="fileInput"
-                class="form-control-file"
-                onchange="previewFile()"
-              />
-            </div>
-            <button type="submit" class="btn btn-primary">
-              <i class="fas fa-check"></i> Recognize
-            </button>
-          </form>
-        </div>
-        {% if resultWithImage %}
-        <div class="col-md-6">
-          <img
-            src="{{ url_for('uploaded_file', filename=resultWithImage['img_name']) }}"
-            alt="uploaded image"
-            id="previewImg"
-            class="img-fluid"
-          />
-        </div>
+
+<head>
+  <title>License Plate Recognition</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+</head>
+
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center mb-5">License Plate Recognition</h1>
+    <div class="row">
+      <div class="col-md-6">
+        <form method="POST" action="/" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="fileInput"><i class="fas fa-upload"></i> Choose a file</label>
+            <input type="file" name="file" id="fileInput" class="form-control-file" onchange="previewFile()" />
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-check"></i> Recognize
+          </button>
+        </form>
       </div>
+    </div>
+      {% if resultWithImage %}
+      
       <div class="mt-5">
         <h2 class="text-center mb-4">Results:</h2>
+        <div class="col-md-6">
+          <img src="{{ url_for('uploaded_file', filename=resultWithImage['img_name']) }}" alt="uploaded image"
+          id="previewImg" class="img-fluid" />
+        </div>
         <div class="alert alert-primary text-center" role="alert">
+          {% if resultWithImage.result %}
           <p>Plate Number: {{ resultWithImage.result }}</p>
-          {% if resultWithImage.make %}
           <p>Make: {{ resultWithImage.make }}</p>
           <p>Model: {{ resultWithImage.model }}</p>
           <p>Year: {{ resultWithImage.year }}</p>
           <p>Color: {{ resultWithImage.color }}</p>
-          {% endif %}
+
           <hr>
           <h4>Owner Information:</h4>
           <p>First Name: {{ resultWithImage.owner_first_name }}</p>
           <p>Last Name: {{ resultWithImage.owner_last_name }}</p>
           <p>Contact Number: {{ resultWithImage.owner_contact_number }}</p>
           <p>Address: {{ resultWithImage.owner_address }}</p>
+
+          {% endif %}
         </div>
-        {% endif %}
       </div>
-    </div>
-    <script>
-      function previewFile() {
-        var preview = document.getElementById("previewImg");
-        var file = document.getElementById("fileInput").files[0];
-        var reader = new FileReader();
-        reader.onloadend = function () {
-          preview.src = reader.result;
-        };
-        if (file) {
-          reader.readAsDataURL(file);
-        } else {
-          preview.src = "";
-        }
+      {% elif errorMsg %}
+      
+      <div class="mt-5">
+        <h2 class="text-center mb-4">Results:</h2>
+        <div class="col-md-6">
+          <img src="{{ url_for('uploaded_file', filename=errorMsg['img_name']) }}" alt="uploaded image"
+          id="previewImg" class="img-fluid" />
+        </div>
+        <div class="alert alert-primary text-center" style="color:rgb(255, 215, 215)" role="alert">
+          <h4 style="color:red">{{ errorMsg.error_message }}</h4>
+        </div>
+      </div>
+    {% endif %}
+
+
+  </div>
+  <script>
+    function previewFile() {
+      var preview = document.getElementById("previewImg");
+      var file = document.getElementById("fileInput").files[0];
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        preview.src = reader.result;
+      };
+      if (file) {
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = "";
       }
-    </script>
-  </body>
+    }
+  </script>
+</body>
+
 </html>

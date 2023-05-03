@@ -9,7 +9,7 @@ import random
 import Display
 import Preprocess
 import PossibleChar
-
+dirname = os.path.dirname(__file__)
 # module level variables ##########################################################################
 
 kNearest = cv2.ml.KNearest_create()
@@ -51,11 +51,12 @@ def loadKNNDataAndTrainKNN():
 
     try:
         # read in training classifications
-        npaClassifications = np.loadtxt("classifications.txt", np.float32)
+        npaClassifications = np.loadtxt(os.path.join(dirname, "classifications.txt"), np.float32)
+            
     # if file could not be opened
-    except:
+    except Exception as e:
         # show error message
-        print("error, unable to open classifications.txt, exiting program\n")
+        print("error, unable to open classifications.txt, exiting program\n", e)
         os.system("pause")
         # and return False
         return False
@@ -63,11 +64,12 @@ def loadKNNDataAndTrainKNN():
 
     try:
         # read in training images
-        npaFlattenedImages = np.loadtxt("flattened_images.txt", np.float32)
+        npaFlattenedImages = np.loadtxt(os.path.join(dirname,"flattened_images.txt"), np.float32)
+        
     # if file could not be opened
-    except:
+    except Exception as e:
         # show error message
-        print("error, unable to open flattened_images.txt, exiting program\n")
+        print("error, unable to open flattened_images.txt, exiting program\n", e)
         os.system("pause")
         # and return False
         return False

@@ -6,14 +6,16 @@ import cv2
 import os
 
 # module level variables ##########################################################################
-MIN_CONTOUR_AREA = 100
+MIN_CONTOUR_AREA = 400
 
 RESIZED_IMAGE_WIDTH = 20
 RESIZED_IMAGE_HEIGHT = 30
-
+dirname = os.path.dirname(__file__)
 ###################################################################################################
 def main():
-    imgTrainingNumbers = cv2.imread("LPD-KNN-PYTHON\Training\training_chars_small_test.png")            # read in training numbers image
+    imgURL = os.path.join(dirname,"tworow.jpg")
+    print(os.path.exists(imgURL), imgURL)
+    imgTrainingNumbers = cv2.imread(imgURL)            # read in training numbers image
 
     if imgTrainingNumbers is None:                          # if image was not read successfully
         print( "error: image not read from file \n\n" )       # print error message to std out
@@ -33,12 +35,15 @@ def main():
                                       2)                                    # constant subtracted from the mean or weighted mean
 
     cv2.imshow("imgThresh", imgThresh)      # show threshold image for reference
-
+    
     imgThreshCopy = imgThresh.copy()        # make a copy of the thresh image, this in necessary b/c findContours modifies the image
 
-    imgContours, npaContours, npaHierarchy = cv2.findContours(imgThreshCopy,        # input image, make sure to use a copy since the function will modify this image in the course of finding contours
+    npaContours, npaHierarchy = cv2.findContours(imgThreshCopy,        # input image, make sure to use a copy since the function will modify this image in the course of finding contours
                                                  cv2.RETR_EXTERNAL,                 # retrieve the outermost contours only
                                                  cv2.CHAIN_APPROX_SIMPLE)           # compress horizontal, vertical, and diagonal segments and leave only their end points
+    # imgContours, npaContours, npaHierarchy = cv2.findContours(imgThreshCopy,        # input image, make sure to use a copy since the function will modify this image in the course of finding contours
+    #                                              cv2.RETR_EXTERNAL,                 # retrieve the outermost contours only
+    #                                              cv2.CHAIN_APPROX_SIMPLE)           # compress horizontal, vertical, and diagonal segments and leave only their end points
 
                                 # declare empty numpy array, we will use this to write to file later
                                 # zero rows, enough cols to hold all image data
@@ -98,8 +103,8 @@ def main():
     return
 
 ###################################################################################################
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
 # end if
 
 

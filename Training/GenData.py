@@ -13,7 +13,7 @@ RESIZED_IMAGE_HEIGHT = 30
 dirname = os.path.dirname(__file__)
 ###################################################################################################
 def main():
-    imgURL = os.path.join(dirname,"tworow.jpg")
+    imgURL = os.path.join(dirname,"training_chars_small_test.png")
     print(os.path.exists(imgURL), imgURL)
     imgTrainingNumbers = cv2.imread(imgURL)            # read in training numbers image
 

@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import os
+import sqlalchemy
 from werkzeug.utils import secure_filename
 from Display import results
 from flask_migrate import Migrate
@@ -98,6 +99,111 @@ def upload_file():
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
+@app.route('/admin_upload', methods=['GET', 'POST'])
+def admin_upload():
+    if request.method == 'POST':
+        # Get the data from the form
+        registration_number = request.form.get('registration_number')
+        plate_number = request.form.get('plate_number')
+        plate_id = request.form.get('plate_id')
+        make = request.form.get('make')
+        model = request.form.get('model')
+        year = request.form.get('year')
+        color = request.form.get('color')
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        contact_number = request.form.get('contact_number')
+        address = request.form.get('address')
+
+        # Create new Owner and Vehicle objects
+        owner = Owner(first_name=first_name, last_name=last_name, contact_number=contact_number, address=address)
+        vehicle = Vehicle(registration_number=registration_number, plate_number=plate_number, make=make, model=model, year=year, color=color, owner=owner)
+        license_plate = LicensePlate(plate_number=plate_number, plate_id=plate_id, plate_image="none")
+
+        try:
+            db.session.add(owner)
+            db.session.add(vehicle)
+            db.session.add(license_plate)
+            db.session.commit()
+            message = 'Data uploaded successfully!'
+            status = 'success'
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            message = 'Database error: Duplicate entry.'
+            status = 'error'
+
+        return render_template('admin_upload.html', message=message, status=status, data=request.form)
+
+    # If not a POST request, render the upload form
+    return render_template('admin_upload.html')
+
+@app.route('/view_all', methods=['GET'])
+def view_all():
+    vehicles = Vehicle.query.all()
+    return render_template('view_all.html', vehicles=vehicles)
+
+@app.route('/admin_edit/<vehicle_id>', methods=['GET', 'POST'])
+def admin_edit(vehicle_id):
+    vehicle = Vehicle.query.get(vehicle_id)
+    if request.method == 'POST':
+        # Get the data from the form
+        registration_number = request.form.get('registration_number')
+        plate_number = request.form.get('plate_number')
+        make = request.form.get('make')
+        model = request.form.get('model')
+        year = request.form.get('year')
+        color = request.form.get('color')
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        contact_number = request.form.get('contact_number')
+        address = request.form.get('address')
+
+        # Update the Owner, Vehicle and LicensePlate objects
+        vehicle.owner.first_name = first_name
+        vehicle.owner.last_name = last_name
+        vehicle.owner.contact_number = contact_number
+        vehicle.owner.address = address
+
+        vehicle.registration_number = registration_number
+        vehicle.plate_number = plate_number
+        vehicle.make = make
+        vehicle.model = model
+        vehicle.year = year
+        vehicle.color = color
+
+        license_plate = LicensePlate.query.filter_by(plate_number=plate_number).first()
+        if license_plate:
+            license_plate.plate_id = request.form.get('plate_id')  # assuming 'plate_id' comes from the form
+        else:
+            license_plate = LicensePlate(plate_number=plate_number, plate_id=request.form.get('plate_id'), plate_image="none")
+            db.session.add(license_plate)
+        
+        try:
+            db.session.commit()
+            msg = "Successfully updated"
+        except sqlalchemy.exc.IntegrityError:
+            db.session.rollback()
+            msg = "Error occured while updating to db"
+        return redirect(url_for('view_all', msg=msg))
+    else:
+        # render the admin_edit.html template with the vehicle data
+        return render_template('admin_edit.html', vehicle=vehicle)
+
+@app.route('/admin_delete/<int:vehicle_id>', methods=['GET'])
+def admin_delete(vehicle_id):
+    # fetch the vehicle by id
+    vehicle = Vehicle.query.get(vehicle_id)
+
+    # if no vehicle is found with the provided id, return a 404 error
+    if vehicle is None:
+        return redirect(url_for('view_all'))
+
+    # delete the vehicle
+    db.session.delete(vehicle)
+    db.session.commit()
+
+    # redirect the user to the view_all page
+    return redirect(url_for('view_all'))
 
 if __name__ == '__main__':
     with app.app_context():

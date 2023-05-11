@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Upload</title>
+</head>
+
+<body>
+
+    <form method="POST">
+        <label for="registration_number">Registration Number (required):</label><br>
+        <input class="input-field" type="text" id="registration_number" name="registration_number" required><br>
+
+        <label for="plate_number">Plate Number (required):</label><br>
+        <input class="input-field" type="text" id="plate_number" name="plate_number" required><br>
+
+        <label for="plate_id">Plate Id:</label><br>
+        <input class="input-field" type="text" id="plate_id" name="plate_id"><br>
+
+        <label for="make">Make:</label><br>
+        <input class="input-field" type="text" id="make" name="make"><br>
+
+        <label for="model">Model:</label><br>
+        <input class="input-field" type="text" id="model" name="model"><br>
+
+        <label for="year">Year:</label><br>
+        <input class="input-field" type="text" id="year" name="year"><br>
+
+        <label for="color">Color:</label><br>
+        <input class="input-field" type="text" id="color" name="color"><br>
+
+        <label for="first_name">Owner's First Name (required):</label><br>
+        <input class="input-field" type="text" id="first_name" name="first_name" required><br>
+
+        <label for="last_name">Owner's Last Name (required):</label><br>
+        <input class="input-field" type="text" id="last_name" name="last_name" required><br>
+
+        <label for="contact_number">Owner's Contact Number:</label><br>
+        <input class="input-field" type="text" id="contact_number" name="contact_number"><br>
+
+        <label for="address">Owner's Address:</label><br>
+        <input class="input-field" type="text" id="address" name="address"><br>
+
+        <input class="input-field" type="submit" value="Submit">
+    </form>
+    <div class="response">
+        <h1>{{ message }}</h1>
+        {% if status == 'success' %}
+        <h2>Uploaded Data:</h2>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Data</th>
+            </tr>
+            <tr>
+                <td>Registration Number:</td>
+                <td>{{ data['registration_number'] }}</td>
+            </tr>
+            <tr>
+                <td>Plate Number:</td>
+                <td>{{ data['plate_number'] }}</td>
+            </tr>
+            <tr>
+                <td>Plate Number:</td>
+                <td>{{ data['plate_id'] }}</td>
+            </tr>
+            <tr>
+                <td>Make:</td>
+                <td>{{ data['make'] }}</td>
+            </tr>
+            <tr>
+                <td>Model:</td>
+                <td>{{ data['model'] }}</td>
+            </tr>
+            <tr>
+                <td>Year:</td>
+                <td>{{ data['year'] }}</td>
+            </tr>
+            <tr>
+                <td>Color:</td>
+                <td>{{ data['color'] }}</td>
+            </tr>
+            <tr>
+                <td>Owner's First Name:</td>
+                <td>{{ data['first_name'] }}</td>
+            </tr>
+            <tr>
+                <td>Owner's Last Name:</td>
+                <td>{{ data['last_name'] }}</td>
+            </tr>
+            <tr>
+                <td>Owner's Contact Number:</td>
+                <td>{{ data['contact_number'] }}</td>
+            </tr>
+            <tr>
+                <td>Owner's Address:</td>
+                <td>{{ data['address'] }}</td>
+            </tr>
+        </table>
+        {% endif %}
+    </div>
+</body>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        gap: 100px;
+    }
+
+    label {
+        margin-bottom: 4px;
+    }
+
+    .input-field {
+        height: 30px;
+        width: 400px;
+        margin-bottom: 16px;
+    }
+    .response{
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+
+</html>

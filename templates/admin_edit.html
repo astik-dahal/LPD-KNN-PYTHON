@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Edit Entry</title>
+</head>
+
+<body>
+    {% if msg %}
+    {{msg}}
+    {% endif %}
+    <h1>Edit Entry</h1>
+    <form action="{{ url_for('admin_edit', vehicle_id=vehicle.id) }}" method="POST">
+        <input type="hidden" name="vehicle_id" value="{{ vehicle.id }}">
+        <label for="registration_number">Registration Number (required):</label>
+        <input type="text" id="registration_number" name="registration_number" value="{{ vehicle.registration_number }}"
+            required>
+        <br>
+        <label for="plate_number">Plate Number (required):</label>
+        <input type="text" id="plate_number" name="plate_number" value="{{ vehicle.plate_number }}" required>
+        <br>
+        <label for="plate_id">Plate ID:</label>
+        <input type="text" id="plate_id" name="plate_id" value="{{ vehicle.plate_id }}">
+        <br>
+        <label for="make">Make:</label>
+        <input type="text" id="make" name="make" value="{{ vehicle.make }}">
+        <br>
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model" value="{{ vehicle.model }}">
+        <br>
+        <label for="year">Year:</label>
+        <input type="number" id="year" name="year" value="{{ vehicle.year }}">
+        <br>
+        <label for="color">Color:</label>
+        <input type="text" id="color" name="color" value="{{ vehicle.color }}">
+        <br>
+        <label for="first_name">Owner's First Name:</label>
+        <input type="text" id="first_name" name="first_name" value="{{ vehicle.owner.first_name }}">
+        <br>
+        <label for="last_name">Owner's Last Name:</label>
+        <input type="text" id="last_name" name="last_name" value="{{ vehicle.owner.last_name }}">
+        <br>
+        <label for="contact_number">Owner's Contact Number:</label>
+        <input type="text" id="contact_number" name="contact_number" value="{{ vehicle.owner.contact_number }}">
+        <br>
+        <label for="address">Owner's Address:</label>
+        <input type="text" id="address" name="address" value="{{ vehicle.owner.address }}">
+        <br>
+        <input type="submit" value="Save Changes">
+    </form>
+</body>
+
+</html>

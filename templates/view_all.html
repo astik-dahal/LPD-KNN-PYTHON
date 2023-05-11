@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>View All Entries</title>
+</head>
+
+<body>
+    <h1>All Entries</h1>
+    <table>
+        <tr>
+            <th>Registration Number:</th>
+            <th>Plate Number:</th>
+            <th>Plate ID:</th>
+            <th>Make:</th>
+            <th>Model:</th>
+            <th>Year:</th>
+            <th>Color</th>
+            <th>Owner's First Name</th>
+            <th>Owner's Last Name</th>
+            <th>Owner's Contact Number</th>
+            <th>Owner's Address</th>
+            <th>Actions</th>
+        </tr>
+        
+        {% for vehicle in vehicles %}
+        <tr>
+            <td>{{ vehicle.registration_number }}</td>
+            
+            <td>{{ vehicle.plate_number }}</td>
+
+            <td>{{ vehicle.plate_id }}</td>
+
+            <td>{{ vehicle.make }}</td>
+
+            <td>{{ vehicle.model }}</td>
+
+            <td>{{ vehicle.year }}</td>
+
+            <td>{{ vehicle.color }}</td>
+
+            <td>{{ vehicle.owner.first_name }}</td>
+
+            <td>{{ vehicle.owner.last_name }}</td>
+
+            <td>{{ vehicle.owner.contact_number }}</td>
+
+            <td>{{ vehicle.owner.address }}</td>
+            <td>
+                <a href="{{ url_for('admin_edit', vehicle_id=vehicle.id) }}">Edit</a>
+                <a href="{{ url_for('admin_delete', vehicle_id=vehicle.id) }}" 
+                   onclick="return confirm('Are you sure you want to delete this entry?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+
+        }
+
+        th,
+        td {
+            padding: 15px;
+            border: 1px solid lightblue;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</body>
+
+</html>
